@@ -3,7 +3,6 @@ const WebpackPwaManifest = require('webpack-pwa-manifest');
 const path = require('path');
 const { InjectManifest } = require('workbox-webpack-plugin');
 
-
 module.exports = () => {
   return {
     mode: 'development',
@@ -17,38 +16,36 @@ module.exports = () => {
     },
     plugins: [
       // TODO: Add and configure workbox plugins for a service worker and manifest file.
-
       new HtmlWebpackPlugin({
         template: './index.html',
         title: 'JATE Plugin'
-      }),
-
-      new WebpackPwaManifest({
-        name: 'Just Another Text Editor',
-        short_name: 'J.A.T.E',
-        description: 'Downloadable Text Editor PWA',
-        background_color: '#ffffff',
-        theme_color: '#ffffff',
-        start_url: './',
-        publicPath: './',
-        icons: [
-          {
-            src: path.resolve('./src/images/logo.png'),
-            sizes: [96, 128, 192, 256, 384, 512],
-            destination: path.join('assets', 'icons'),
-          },
-        ],
       }),
       new InjectManifest({
         swSrc: './src-sw.js',
         include: [/\.html$/, /\.js$/, /\.css$/, /\.png$/, /\.ico$/],
         swDest: 'src-sw.js',
       }),
+      new WebpackPwaManifest({
+        fingerprints: false,
+        inject: true,
+        name: 'Just Another Text Editor',
+        short_name: 'J.A.T.E',
+        description: 'Downloadable Text Editor PWA',
+        background_color: '#FFFFFF',
+        theme_color: '#FFFFFF',
+        start_url: './',
+        publicPath: './',
+        icons: [
+          {
+            src: path.resolve('src/images/logo.png'),
+            sizes: [96, 128, 192, 256, 384, 512],
+            destination: path.join('assets', 'icons'),
+          },
+        ],
+      }),
     ],
-
     module: {
       // TODO: Add CSS loaders and babel to webpack.
-
       rules: [
         {
           test: /\.css$/i,
